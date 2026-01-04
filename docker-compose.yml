@@ -25,7 +25,7 @@ services:
 
   caddy-gui:
     # IMPORTANT: Replace <YOUR_GITHUB_USERNAME_OR_ORG> with your actual GitHub username or organization.
-    image: ghcr.io/taeho9/caddymanger/caddy-gui:latest
+    image: ghcr.io/taeho9/caddymanager/caddy-gui:latest
     container_name: caddy-gui
     restart: unless-stopped
     ports:
