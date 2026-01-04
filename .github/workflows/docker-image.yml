@@ -10,12 +10,15 @@ name: Docker Image CI for caddy-gui
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - 'caddy-gui/**'
+  pull_request:
+    branches: [ "main" ]
+    types: [ closed ]
 
 jobs:
 
   build_and_push:
+    # This job runs on direct pushes to main, or when a pull request is merged into main.
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
 
     runs-on: ubuntu-latest
 
