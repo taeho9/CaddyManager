@@ -1,0 +1,10 @@
+# Node.js
+node_modules/
+npm-debug.log
+.npm
+
+# Docker - Local override file
+docker-compose.override.yml
+
+# Local data (for dev environment)
+caddy_local_data/

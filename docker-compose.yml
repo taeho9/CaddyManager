@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "6690:443"
+    volumes:
+      - /data/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - /data/caddy/data:/data
+      - /data/caddy/config:/config
+    networks:
+      - reverse_proxy
+
+  caddy-gui:
+    build: ./caddy-gui
+    container_name: caddy-gui
+    restart: unless-stopped
+    ports:
+      - "8890:80"
+    volumes:
+      - /data/caddy/Caddyfile:/app/Caddyfile
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - reverse_proxy
+
+networks:
+  reverse_proxy:
+    external: true
