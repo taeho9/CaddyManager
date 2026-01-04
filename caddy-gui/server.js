@@ -17,6 +17,38 @@ const docker = new Docker({ socketPath: DOCKER_SOCKET_PATH });
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/**
+ * Helper function to run a command in a Docker container and get the result.
+ * @param {import('dockerode').Container} container The dockerode container object.
+ * @param {string[]} cmd The command and its arguments to execute.
+ * @returns {Promise<{Output: string, ExitCode: number}>}
+ */
+const runCommandInContainer = async (container, cmd) => {
+    const exec = await container.exec({
+        Cmd: cmd,
+        AttachStdout: true,
+        AttachStderr: true,
+    });
+
+    return new Promise((resolve, reject) => {
+        exec.start({ hijack: true, stdin: true }, (err, stream) => {
+            if (err) return reject(err);
+
+            let output = '';
+            stream.on('data', chunk => output += chunk.toString('utf8'));
+            stream.on('end', async () => {
+                try {
+                    const inspect = await exec.inspect();
+                    resolve({ Output: output, ExitCode: inspect.ExitCode });
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        });
+    });
+};
+
+
 // API to get Caddyfile content
 app.get('/api/caddyfile', (req, res) => {
     fs.readFile(CADDYFILE_PATH, 'utf8', (err, data) => {
@@ -44,35 +76,42 @@ app.post('/api/caddyfile', (req, res) => {
     });
 });
 
-// API to reload Caddy
+// API to validate and reload Caddy
 app.post('/api/caddy/reload', async (req, res) => {
     try {
         const container = docker.getContainer(CADDY_CONTAINER_NAME);
-        const exec = await container.exec({
-            Cmd: ['caddy', 'reload', '--config', '/etc/caddy/Caddyfile'],
-            AttachStdout: true,
-            AttachStderr: true,
-        });
 
-        const stream = await exec.start({ hijack: true, stdin: true });
-        
-        let output = '';
-        stream.on('data', chunk => output += chunk.toString('utf8'));
-        
-        stream.on('end', async () => {
-            const inspect = await exec.inspect();
-            if (inspect.ExitCode === 0) {
-                console.log('Caddy reloaded successfully.');
-                res.json({ message: 'Caddy reloaded successfully.', output: output });
-            } else {
-                console.error(`Caddy reload failed with exit code ${inspect.ExitCode}:`, output);
-                res.status(500).json({ error: `Caddy reload failed.`, output: output });
-            }
-        });
+        // 1. Validate the configuration first
+        console.log('Validating Caddyfile...');
+        const validateCmd = ['caddy', 'validate', '--config', '/etc/caddy/Caddyfile'];
+        const validateResult = await runCommandInContainer(container, validateCmd);
+
+        if (validateResult.ExitCode !== 0) {
+            console.error(`Caddyfile validation failed:\n${validateResult.Output}`);
+            return res.status(400).json({ 
+                error: 'Caddyfile validation failed. Please fix the errors.', 
+                output: validateResult.Output 
+            });
+        }
+        console.log('Caddyfile validation successful.');
+
+        // 2. If validation is successful, then reload
+        console.log('Reloading Caddy...');
+        const reloadCmd = ['caddy', 'reload', '--config', '/etc/caddy/Caddyfile'];
+        const reloadResult = await runCommandInContainer(container, reloadCmd);
+
+        if (reloadResult.ExitCode === 0) {
+            console.log('Caddy reloaded successfully.');
+            res.json({ message: 'Caddyfile validated and reloaded successfully!', output: reloadResult.Output });
+        } else {
+            // This case is unlikely if validation passed, but good for safety
+            console.error(`Caddy reload failed unexpectedly:\n${reloadResult.Output}`);
+            res.status(500).json({ error: 'Caddy reload failed unexpectedly after successful validation.', output: reloadResult.Output });
+        }
 
     } catch (err) {
-        console.error('Error reloading Caddy:', err);
-        res.status(500).json({ error: 'Failed to execute Caddy reload command.', details: err.message });
+        console.error('Error during Caddy reload process:', err);
+        res.status(500).json({ error: 'Failed to execute Caddy command.', details: err.message });
     }
 });
 
