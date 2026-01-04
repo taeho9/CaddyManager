@@ -6,20 +6,20 @@ services:
     container_name: caddy
     restart: always
     ports:
-      - "8080:80"
+      - "80:80"
       - "6690:443"
     environment:
       - TZ=Asia/Seoul
       - XDG_CONFIG_HOME=/config
       - XDG_DATA_HOME=/data
-    # volumes: # (for OCI)
-    #  - /data/caddy/Caddyfile:/etc/caddy/Caddyfile
-    #  - /data/caddy/data:/data
-    #  - /data/caddy/config:/config
-    volumes: # (for Synology)
-      - /volume1/docker/caddy/data:/data:rw
-      - /volume1/docker/caddy/config:/config:rw
-      - /volume1/docker/caddy/Caddyfile:/etc/caddy/Caddyfile:rw
+    volumes: # (for OCI)
+      - /data/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - /data/caddy/data:/data
+      - /data/caddy/config:/config
+    # volumes: # (for Synology)
+    #  - /volume1/docker/caddy/data:/data:rw
+    #  - /volume1/docker/caddy/config:/config:rw
+    #  - /volume1/docker/caddy/Caddyfile:/etc/caddy/Caddyfile:rw
     networks:
       - reverse_proxy
 
@@ -30,12 +30,12 @@ services:
     restart: unless-stopped
     ports:
       - "8890:80"
-    # volumes: # (for OCI)
-    #  - /data/caddy/Caddyfile:/app/Caddyfile
-    #  - /var/run/docker.sock:/var/run/docker.sock
-    volumes: # (for Synology)
-      - /volume1/docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+    volumes: # (for OCI)
+      - /data/caddy/Caddyfile:/app/Caddyfile
       - /var/run/docker.sock:/var/run/docker.sock
+    #volumes: # (for Synology)
+    #  - /volume1/docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+    #  - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - reverse_proxy
 
