@@ -33,10 +33,13 @@ jobs:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Set lower case repository name
+      run: echo "REPO_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
     - name: Build and push caddy-gui image
       uses: docker/build-push-action@v4
       with:
         context: ./caddy-gui
         file: ./caddy-gui/Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository }}/caddy-gui:latest
+        tags: ghcr.io/${{ env.REPO_NAME }}/caddy-gui:latest
