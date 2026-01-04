@@ -6,7 +6,7 @@ services:
     container_name: caddy
     restart: always
     ports:
-      - "8080:80"
+      - "80:80"
       - "6690:443"
     environment:
       - TZ=Asia/Seoul
