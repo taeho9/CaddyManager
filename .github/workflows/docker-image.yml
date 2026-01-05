@@ -39,6 +39,9 @@ jobs:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Set Repository Owner Env Var
+      run: echo "REPOSITORY_OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
+
     - name: Set lower case repository name
       run: echo "REPO_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
