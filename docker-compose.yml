@@ -26,7 +26,7 @@ services:
   caddy-gui:
     # The image owner is now dynamically set via the REPOSITORY_OWNER environment variable for CI/CD.
     # For local development, it falls back to 'taeho9'.
-    image: ghcr.io/${REPOSITORY_OWNER:-taeho9}/caddymanager/caddy-gui:latest
+    image: ghcr.io/${REPOSITORY_OWNER:-taeho9}/caddymanger/caddy-gui:latest
     container_name: caddy-gui
     restart: unless-stopped
     ports:
