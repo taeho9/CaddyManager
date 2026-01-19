@@ -6,7 +6,10 @@ services:
     container_name: caddy
     restart: always
     ports:
-      - "80:80"
+      # for Home NAS
+      - "8880:80"
+      # for OCI
+      # - "80:80"      
       - "6690:443"
     environment:
       - TZ=Asia/Seoul
