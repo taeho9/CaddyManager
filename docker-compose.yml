@@ -21,15 +21,11 @@ services:
       - /data/caddy/config:/config
     # volumes: # (for Synology)
     #   - /volume1/docker/caddy/data:/data:rw
-    #   - /volume1/docker/caddy/config:/config:rw
-    #   - /volume1/docker/caddy/Caddyfile:/etc/caddy/Caddyfile:rw
     networks:
       - reverse_proxy
 
   caddy-gui:
-    # The image owner is now dynamically set via the REPOSITORY_OWNER environment variable for CI/CD.
-    # For local development, it falls back to 'taeho9'.
-    image: ghcr.io/${REPOSITORY_OWNER:-taeho9}/caddymanager/caddy-gui:latest
+    image: ghcr.io/taeho9/caddymanger/caddy-gui:latest
     container_name: caddy-gui
     restart: unless-stopped
     ports:
@@ -39,10 +35,3 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     # volumes: # (for Synology)
     #   - /volume1/docker/caddy/Caddyfile:/etc/caddy/Caddyfile
-    #   - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - reverse_proxy
-
-networks:
-  reverse_proxy:
-    external: true

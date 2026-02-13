@@ -19,6 +19,7 @@ jobs:
 
   build:
     # This job runs on pushes to the main branch.
+    # 코드테스트 입니다.
 
     runs-on: ubuntu-latest
 
