@@ -1,0 +1,40 @@
+name: Build Caddy-MaxMind Image
+
+on:
+  workflow_dispatch:
+
+permissions:
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set lower case repository name
+      run: echo "REPO_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+    - name: Build and push caddy-maxmind image
+      uses: docker/build-push-action@v4
+      with:
+        context: ./caddy-maxmind
+        file: ./caddy-maxmind/Dockerfile
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ghcr.io/taeho9/caddymanager/caddy-maxmind:latest
