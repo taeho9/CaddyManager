@@ -2,8 +2,6 @@ version: '3.8'
 
 services:
   caddy:
-    # GitHub Actions에서 빌드한 커스텀 Caddy 이미지를 사용합니다.
-    # caddy-gui와 이미지 이름 규칙을 통일합니다.
     # For local development, it falls back to 'taeho9/caddymanger'.
     image: ghcr.io/${GITHUB_REPOSITORY:-taeho9/caddymanger}/caddy-maxmind:latest
     container_name: caddy
@@ -31,6 +29,7 @@ services:
 
   caddy-gui:
 
+    image: ghcr.io/${GITHUB_REPOSITORY:-taeho9/caddymanger}/caddy-gui:latest
     container_name: caddy-gui
     restart: unless-stopped
     ports:
