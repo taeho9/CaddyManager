@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
     ports:
       - "8890:80"
-  #  volumes: # (for OCI)
+    volumes: # (for OCI)
       - /data/caddy/Caddyfile:/app/Caddyfile
       - /var/run/docker.sock:/var/run/docker.sock
     # volumes: # (for Synology)
