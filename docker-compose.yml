@@ -3,7 +3,7 @@ version: '3.8'
 services:
   caddy:
     # For local development, it falls back to 'taeho9/caddymanger'.
-    image: ghcr.io/${GITHUB_REPOSITORY:-taeho9/caddymanger}/caddy-maxmind:latest
+    image: caddy:latest
     container_name: caddy
     restart: always
     ports:
