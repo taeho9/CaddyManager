@@ -19,8 +19,6 @@ services:
     volumes: # (for OCI)
       - /data/caddy/Caddyfile:/etc/caddy/Caddyfile
       - /data/caddy/data:/data
-      # MaxMind DB 파일을 컨테이너에 마운트합니다. 호스트 경로를 확인해주세요.
-      - /data/caddy/GeoLite2-City.mmdb:/etc/caddy/GeoLite2-City.mmdb:ro
       - /data/caddy/config:/config
     # volumes: # (for Synology)
     #   - /volume1/docker/caddy/data:/data:rw
@@ -28,7 +26,6 @@ services:
       - reverse_proxy
 
   caddy-gui:
-
     image: ghcr.io/${GITHUB_REPOSITORY:-taeho9/caddymanger}/caddy-gui:latest
     container_name: caddy-gui
     restart: unless-stopped
