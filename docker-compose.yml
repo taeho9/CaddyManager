@@ -35,3 +35,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     # volumes: # (for Synology)
     #   - /volume1/docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+
+networks:
+  reverse_proxy:
+    name: reverse_proxy
