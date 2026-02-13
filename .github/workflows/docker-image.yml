@@ -10,13 +10,15 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 permissions:
   packages: write
 
 jobs:
   build-and-push:
-    # This job runs on pushes to the main branch.
+    # On push to main, this job builds the caddy-gui image.
+    # On manual trigger (workflow_dispatch), it builds the caddy-maxmind image.
 
     runs-on: ubuntu-latest
 
@@ -42,17 +44,23 @@ jobs:
 
     - name: Build and push caddy-gui image
       uses: docker/build-push-action@v4
+      if: github.event_name == 'push'
       with:
         context: ./caddy-gui
         file: ./caddy-gui/Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
         tags: ghcr.io/${{ env.REPO_NAME }}/caddy-gui:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
     - name: Build and push caddy-maxmind image
       uses: docker/build-push-action@v4
+      if: github.event_name == 'workflow_dispatch'
       with:
         context: ./caddy_custom
         platforms: linux/amd64,linux/arm64
         push: true
         tags: ghcr.io/${{ env.REPO_NAME }}/caddy-maxmind:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
