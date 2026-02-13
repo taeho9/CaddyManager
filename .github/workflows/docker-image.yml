@@ -16,10 +16,6 @@ permissions:
   packages: write
 
 jobs:
-  build-and-push:
-    # On push to main, this job builds the caddy-gui image.
-    # On manual trigger (workflow_dispatch), it builds the caddy-maxmind image.
-
     runs-on: ubuntu-latest
 
     steps:
