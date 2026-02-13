@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main # 또는 사용하시는 주 브랜치 이름
-    paths:
-      - 'caddy_custom/Dockerfile' # Dockerfile이 변경될 때만 실행
-      - '.github/workflows/build-caddy.yml' # 워크플로우 파일이 변경될 때 실행
 
 jobs:
   build-and-push:
