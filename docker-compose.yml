@@ -26,7 +26,7 @@ services:
       - reverse_proxy
 
   caddy-gui:
-    image: ghcr.io/${GITHUB_REPOSITORY:-taeho9/caddymanger}/caddy-gui:latest
+    image: ghcr.io/taeho9/caddymanager/caddy-gui:latest
     container_name: caddy-gui
     restart: unless-stopped
     ports:
