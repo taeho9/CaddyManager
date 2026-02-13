@@ -2,7 +2,10 @@ version: '3.8'
 
 services:
   caddy:
-    image: caddy:latest
+    # GitHub Actions에서 빌드한 커스텀 Caddy 이미지를 사용합니다.
+    # caddy-gui와 이미지 이름 규칙을 통일합니다.
+    # For local development, it falls back to 'taeho9'.
+    image: ghcr.io/${REPOSITORY_OWNER:-taeho9}/caddymanager/caddy-maxmind:latest
     container_name: caddy
     restart: always
     ports:
@@ -18,6 +21,8 @@ services:
     volumes: # (for OCI)
       - /data/caddy/Caddyfile:/etc/caddy/Caddyfile
       - /data/caddy/data:/data
+      # MaxMind DB 파일을 컨테이너에 마운트합니다. 호스트 경로를 확인해주세요.
+      - /data/caddy/GeoLite2-City.mmdb:/etc/caddy/GeoLite2-City.mmdb:ro
       - /data/caddy/config:/config
     # volumes: # (for Synology)
     #   - /volume1/docker/caddy/data:/data:rw
