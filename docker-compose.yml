@@ -25,18 +25,17 @@ services:
     networks:
       - reverse_proxy
 
-  caddy-gui:
-    image: ghcr.io/${GITHUB_REPOSITORY:-taeho9/caddymanger}/caddy-gui:latest
-    container_name: caddy-gui
-    restart: unless-stopped
-    ports:
-      - "8890:80"
-    volumes: # (for OCI)
-      - /data/caddy/Caddyfile:/app/Caddyfile
-      - /var/run/docker.sock:/var/run/docker.sock
+  #caddy-gui:
+  #  image: ghcr.io/${GITHUB_REPOSITORY:-taeho9/caddymanger}/caddy-gui:latest
+  #  container_name: caddy-gui
+  #  restart: unless-stopped
+  #  ports:
+  #    - "8890:80"
+  #  volumes: # (for OCI)
+  #    - /data/caddy/Caddyfile:/app/Caddyfile
+  #    - /var/run/docker.sock:/var/run/docker.sock
     # volumes: # (for Synology)
     #   - /volume1/docker/caddy/Caddyfile:/app/Caddyfile
-
 networks:
   reverse_proxy:
     name: reverse_proxy
