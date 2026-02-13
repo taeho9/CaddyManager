@@ -24,18 +24,21 @@ services:
     #   - /volume1/docker/caddy/data:/data:rw
     networks:
       - reverse_proxy
+    depends_on:
+      - caddy-gui
 
   caddy-gui:
     image: ghcr.io/taeho9/caddymanager/caddy-gui:latest
     container_name: caddy-gui
+    hostname: caddy-gui
     restart: unless-stopped
-    ports:
-      - "8890:80"
     volumes: # (for OCI)
       - /data/caddy/Caddyfile:/app/Caddyfile
       - /var/run/docker.sock:/var/run/docker.sock
     # volumes: # (for Synology)
     #   - /volume1/docker/caddy/Caddyfile:/app/Caddyfile
+    networks:
+      - reverse_proxy
 
 networks:
   reverse_proxy:
