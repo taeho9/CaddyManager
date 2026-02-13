@@ -8,8 +8,6 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -41,7 +39,6 @@ jobs:
 
     - name: Build and push caddy-gui image
       uses: docker/build-push-action@v4
-      if: github.event_name == 'push'
       with:
         context: ./caddy-gui
         file: ./caddy-gui/Dockerfile
