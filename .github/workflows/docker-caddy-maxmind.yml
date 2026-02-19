@@ -1,25 +1,36 @@
+# 워크플로의 이름
 name: Build Caddy-MaxMind Image
 
+# 이 액션은 수동으로 실행함을 정의
+# 사용자가 직접 "Run workflow"를 눌러 실행함
 on:
   workflow_dispatch:
 
+# GitHub 패키지(GHCR : GitHub Container Registry)에 이미지를 업로드할 수 
+# 있는 쓰기 권한을 부여
 permissions:
   packages: write
 
 jobs:
   build:
+    # 이미지의 OS는 ubuntu 최신 버전
     runs-on: ubuntu-latest
 
     steps:
+    # 현재 리포지토리에 있는 소스 코드(Dockerfile 등)를 가상 환경으로 가져옴
     - name: Checkout
       uses: actions/checkout@v3
-      
+  
+    # 빌드를 지원하기 위한 가상화 에뮬레이터를 설치
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
 
+    # 멀티 플랫폼 빌드 등 확장된 기능을 제공하는 Docker Buildx 도구를 설정
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
+    # caddy-maxmind/Dockerfile를 사용해 Caddy 커스텀 이미지를 빌드한 다음 
+    # GHCR에 Push하기 위한 GHCR에 로그인 정보 설정
     - name: Log in to GitHub Container Registry
       uses: docker/login-action@v2
       with:
@@ -27,12 +38,17 @@ jobs:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    # 리포지토리 이름에 대문자가 섞여 있으면 빌드 에러가 날 수 있어 
+    # 소문자로 변환해 저장
     - name: Set lower case repository name
       run: echo "REPO_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
+    # 실제 빌드 및 푸시 단계
     - name: Build and push caddy-maxmind image
       uses: docker/build-push-action@v4
       with:
+        # caddy maxmind 플러그인이 포함된 커스텀 Caddy 이미지 빌드를 위한
+        # Dockerfile 경로와 빌드할 플랫폼과 Push여부, tag 설정
         context: ./caddy-maxmind
         file: ./caddy-maxmind/Dockerfile
         platforms: linux/amd64,linux/arm64
