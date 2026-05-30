@@ -52,7 +52,7 @@ services:
       # Caddy 방어 시나리오 및 리눅스 기본 방어 시나리오 자동 다운로드
       - COLLECTIONS=crowdsecurity/caddy crowdsecurity/base-http-scenarios crowdsecurity/linux
       # Caddy에 설정한 것과 동일한 API 키 입력
-      - BOUNCER_KEY_CADDY=my_super_secret_bouncer_key_123
+      - BOUNCER_KEY_CADDY=1qaz@WSX3edc
     volumes:
       - /data/caddy/crowdsec/db:/var/lib/crowdsec/data/
       - /data/caddy/crowdsec/config:/etc/crowdsec/
