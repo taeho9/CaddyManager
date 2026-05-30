@@ -8,6 +8,7 @@ FROM caddy:builder AS builder
 # 새로운 caddy 바이너리(실행파일)가 /usr/bin/caddy 경로에 생성됨
 RUN xcaddy build \
     --with github.com/porech/caddy-maxmind-geolocation
+    --with github.com/hslatman/caddy-crowdsec-bouncer/http
 
 # Caddy의 공식 이미지를 사용함
 FROM caddy:latest
