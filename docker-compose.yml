@@ -36,7 +36,7 @@ services:
     hostname: caddy-gui
     restart: unless-stopped
     volumes: # (for OCI)
-      - /data/caddy/Caddyfile:/app/Caddyfile
+      - / /data/caddy/Caddyfile:/etc/caddy/Caddyfile
       - /var/run/docker.sock:/var/run/docker.sock
     # volumes: # (for Synology)
     #   - /volume1/docker/caddy/Caddyfile:/app/Caddyfile
