@@ -7,7 +7,7 @@ const app = express();
 const port = 80;
 
 // --- Configuration ---
-const CADDYFILE_PATH = '/app/Caddyfile';
+const CADDYFILE_PATH = '/etc/caddy/Caddyfile';
 const DOCKER_SOCKET_PATH = '/var/run/docker.sock';
 const CADDY_CONTAINER_NAME = 'caddy';
 // -------------------
