@@ -50,7 +50,7 @@ services:
     environment:
       - TZ=Asia/Seoul
       - COLLECTIONS=crowdsecurity/caddy crowdsecurity/base-http-scenarios crowdsecurity/linux
-      - BOUNCER_KEY_CADDY=1qaz@WSX3edc
+      - BOUNCER_KEY_CADDY=${{ secrets.BOUNCER_KEY_CADDY }}
     volumes:
       - /data/caddy/crowdsec/db:/var/lib/crowdsec/data/
       - /data/caddy/crowdsec/config/profiles.yaml:/etc/crowdsec/profiles.yaml
