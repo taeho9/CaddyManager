@@ -53,12 +53,10 @@ services:
       - BOUNCER_KEY_CADDY=1qaz@WSX3edc
     volumes:
       - /data/caddy/crowdsec/db:/var/lib/crowdsec/data/
-      # 1. 전체 폴더가 아닌 profiles.yaml 파일만 정확히 1:1 매핑하도록 복구
       - /data/caddy/crowdsec/config/profiles.yaml:/etc/crowdsec/profiles.yaml
       - /data/caddy/logs:/var/log/caddy:ro
       - /data/caddy/crowdsec/acquis.d/caddy.yaml:/etc/crowdsec/acquis.d/caddy.yaml:ro
-      # 2. 시나리오 폴더 매핑 (이제 정상적으로 이 경로를 읽습니다)
-      - /data/caddy/crowdsec/scenarios:/etc/crowdsec/scenarios:ro
+      - /data/caddy/crowdsec/scenarios/custom:/etc/crowdsec/scenarios/custom:ro
     security_opt:
       - no-new-privileges:true
     # 3. reverse_proxy는 네트워크 항목으로 따로 빼주어야 합니다.
