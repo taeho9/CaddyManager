@@ -44,7 +44,7 @@ jobs:
       run: echo "REPO_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
     # 실제 빌드 및 푸시 단계
-    - name: Build and push caddy-maxmind image
+    - name: Build and push caddy-maxmind-crowdsec image
       uses: docker/build-push-action@v5
       with:
         # caddy maxmind 플러그인이 포함된 커스텀 Caddy 이미지 빌드를 위한

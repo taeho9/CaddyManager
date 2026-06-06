@@ -4,7 +4,7 @@
 FROM caddy:builder AS builder
 
 # 이미지 내의 빌드도구(xcaddy)를 실행하며 github에 공개되어 있는
-# caddy-maxmind-geolocation을 포함해 빌드한다. 빌드가 완료되면 
+# caddy-maxmind-geolocation과 caddy-crowdsec-bouncer/http을 포함해 빌드한다. 빌드가 완료되면 
 # 새로운 caddy 바이너리(실행파일)가 /usr/bin/caddy 경로에 생성됨
 RUN xcaddy build \
     --with github.com/porech/caddy-maxmind-geolocation \
