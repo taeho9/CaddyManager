@@ -1,5 +1,5 @@
 # 워크플로의 이름
-name: Build Caddy-MaxMind-CrowdSec Image
+name: Build Caddy-MaxMind Image
 
 # 이 액션은 수동으로 실행함을 정의
 # 사용자가 직접 "Run workflow"를 눌러 실행함
@@ -44,7 +44,7 @@ jobs:
       run: echo "REPO_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
     # 실제 빌드 및 푸시 단계
-    - name: Build and push caddy-maxmind-crowdsec image
+    - name: Build and push caddy-maxmind image
       uses: docker/build-push-action@v5
       with:
         # caddy maxmind 플러그인이 포함된 커스텀 Caddy 이미지 빌드를 위한
@@ -53,4 +53,4 @@ jobs:
         file: ./caddy-maxmind/Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
-        tags: ghcr.io/taeho9/caddymanager/caddy-maxmind-crowdsec:latest
+        tags: ghcr.io/taeho9/caddymanager/caddy-maxmind:latest
