@@ -3,7 +3,7 @@ version: '3.8'
 services:
   caddy:
     # For local development, it falls back to 'taeho9/caddymanger'.
-    image: ghcr.io/taeho9/caddymanager/caddy-maxmind-crowdsec:latest
+    image: ghcr.io/taeho9/caddymanager/caddy-maxmind:latest
     container_name: caddy
     restart: always
     ports:
@@ -16,7 +16,6 @@ services:
       - TZ=Asia/Seoul
       - XDG_CONFIG_HOME=/config
       - XDG_DATA_HOME=/data
-      - CROWDSEC_API_KEY=1qaz@WSX3edc 
     volumes: # (for OCI)
       - /data/caddy/Caddyfile:/etc/caddy/Caddyfile
       - /data/caddy/data:/data
@@ -28,7 +27,6 @@ services:
       - reverse_proxy
     depends_on:
       - caddy-gui
-      - crowdsec
 
   caddy-gui:
     image: ghcr.io/taeho9/caddymanager/caddy-gui:latest
@@ -42,27 +40,7 @@ services:
     #   - /volume1/docker/caddy/Caddyfile:/app/Caddyfile
     networks:
       - reverse_proxy
-
-  crowdsec:
-    image: crowdsecurity/crowdsec:latest
-    container_name: crowdsec
-    restart: unless-stopped
-    environment:
-      - TZ=Asia/Seoul
-      - COLLECTIONS=crowdsecurity/caddy crowdsecurity/base-http-scenarios crowdsecurity/linux
-      - BOUNCER_KEY_CADDY=1qaz@WSX3edc
-    volumes:
-      - /data/caddy/crowdsec/db:/var/lib/crowdsec/data/
-      - /data/caddy/crowdsec/config/profiles.yaml:/etc/crowdsec/profiles.yaml
-      - /data/caddy/logs:/var/log/caddy:ro
-      - /data/caddy/crowdsec/acquis.d/caddy.yaml:/etc/crowdsec/acquis.d/caddy.yaml:ro
-      - /data/caddy/crowdsec/scenarios/custom:/etc/crowdsec/scenarios/custom:ro
-    security_opt:
-      - no-new-privileges:true
-    # 3. reverse_proxy는 네트워크 항목으로 따로 빼주어야 합니다.
-    networks:
-      - reverse_proxy
-
+      
 networks:
   reverse_proxy:
     name: reverse_proxy
