@@ -28,12 +28,13 @@ Caddy는 강력하고 편리하지만, 서버에 직접 접속해서 Caddyfile�
 - Caddy 설정 검증
 - 검증이 통과되면 Caddy 재로드
 - Docker Socket을 활용해 컨테이너 내부에서 직접 명령 실행
+- MaxMind 플러그인을 통해 Geo-location 기반 접근 제어 가능
 
 ## 구성 개요
 
 이 프로젝트는 두 개의 컨테이너로 구성됩니다.
 
-- `caddy`: 실제 프록시 서버로 동작하는 Caddy 컨테이너
+- `caddy`: 실제 프록시 서버로 동작하는 Caddy 컨테이너. maxmind 플러그인 추가됨.
 - `caddy-gui`: Caddyfile 편집 및 재로드를 위한 웹 UI 컨테이너
 
 `caddy-gui`는 Docker Socket에 접근해 Caddy 컨테이너의 명령을 실행하므로, 웹에서 설정 변경 후 바로 반영할 수 있습니다.
