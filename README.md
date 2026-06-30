@@ -104,8 +104,15 @@ docker compose up -d
 
 이 프로젝트는 필요에 따라 자유롭게 사용하고 수정할 수 있도록 구성되어 있습니다.
 
+
 ## 마무리
 
 CaddyManager는 단순한 설정 편집기를 넘어, Docker 기반 Caddy 운영을 조금 더 편하게 만들기 위한 작은 도구입니다.
 
+### 적용 사례
+
+CaddyManager의 적용 사례는 다음 블로그 게시물에서 확인할 수 있습니다:
+[CaddyManager 적용 사례](https://blogger.pe.kr/reverse-proxy-caddy-manager-1263/)
+
 개인 서버, NAS, 클라우드 서버 등 어디서든 Caddy를 더 쉽게 다루고 싶다면 이 프로젝트가 작은 도움이 되길 바랍니다.
+
